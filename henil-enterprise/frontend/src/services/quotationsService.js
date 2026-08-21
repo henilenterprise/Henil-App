@@ -187,3 +187,14 @@ export async function duplicateQuotation(id) {
 
   return createQuotation(newQuotation, items);
 }
+
+/**
+ * Efficient count-only query (head request, no rows fetched) for the
+ * Dashboard's Business Overview cards.
+ * @param {string[]} statuses
+ */
+export async function countQuotationsByStatus(statuses) {
+  const { count, error } = await supabase.from(TABLE).select('id', { count: 'exact', head: true }).in('status', statuses);
+  if (error) throw error;
+  return count ?? 0;
+}
