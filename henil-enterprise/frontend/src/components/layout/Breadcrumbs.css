@@ -1,0 +1,29 @@
+.breadcrumbs ol {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.breadcrumbs a {
+  color: var(--color-text-muted);
+}
+.breadcrumbs a:hover {
+  color: var(--color-gold-active);
+}
+
+.breadcrumbs [aria-current='page'] {
+  color: var(--color-text-secondary);
+  font-weight: var(--fw-medium);
+}
+
+.breadcrumbs__sep {
+  color: var(--color-neutral-300);
+}

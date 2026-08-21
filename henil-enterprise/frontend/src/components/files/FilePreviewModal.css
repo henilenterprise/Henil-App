@@ -1,0 +1,43 @@
+.file-preview__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.file-preview__spinner {
+  animation: file-preview-spin 0.8s linear infinite;
+  color: var(--color-gold);
+}
+
+@keyframes file-preview-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.file-preview__image {
+  max-width: 100%;
+  max-height: 60vh;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.file-preview__pdf {
+  width: 100%;
+  height: 60vh;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.file-preview__unsupported {
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+}
+.file-preview__unsupported p {
+  margin: 0 0 var(--space-2) 0;
+}

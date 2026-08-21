@@ -1,0 +1,96 @@
+.datepicker__trigger {
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.datepicker__placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.datepicker__popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: min(280px, calc(100vw - 32px));
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-4);
+  z-index: var(--z-dropdown);
+  animation: dropdown-in var(--duration-fast) var(--ease-standard);
+}
+
+.datepicker__popover--right {
+  left: auto;
+  right: 0;
+}
+
+.datepicker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.datepicker__month-label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.datepicker__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.datepicker__nav:hover {
+  background-color: var(--color-neutral-100);
+}
+
+.datepicker__weekdays,
+.datepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.datepicker__weekdays span {
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  padding-bottom: var(--space-2);
+}
+
+.datepicker__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-xs);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.datepicker__day:hover {
+  background-color: var(--color-neutral-100);
+}
+
+.datepicker__day--today {
+  border: var(--border-width) solid var(--color-gold);
+}
+
+.datepicker__day--selected {
+  background-color: var(--color-black);
+  color: var(--color-text-inverse);
+  font-weight: var(--fw-semibold);
+}
+.datepicker__day--selected:hover {
+  background-color: var(--color-black-soft);
+}

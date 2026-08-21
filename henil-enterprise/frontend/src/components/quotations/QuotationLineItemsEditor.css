@@ -1,0 +1,93 @@
+.line-items__table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: var(--space-4);
+}
+
+.line-items__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.line-items__table th {
+  text-align: left;
+  padding: var(--space-2) var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+  border-bottom: var(--border-width) solid var(--color-border);
+  white-space: nowrap;
+}
+
+.line-items__table td {
+  padding: var(--space-2);
+  border-bottom: var(--border-width) solid var(--color-border);
+  vertical-align: top;
+}
+
+.line-items__col-product { width: 190px; }
+.line-items__col-desc { min-width: 180px; }
+.line-items__col-qty { width: 80px; }
+.line-items__col-unit { width: 90px; }
+.line-items__col-rate { width: 100px; }
+.line-items__col-gst { width: 90px; }
+.line-items__col-amount { width: 110px; }
+.line-items__col-remove { width: 36px; }
+
+.line-items__input {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: var(--border-width-md) solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+}
+.line-items__input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-focus);
+}
+.line-items__input--num {
+  text-align: right;
+}
+.line-items__input--error {
+  border-color: var(--color-danger);
+}
+
+.line-items__error {
+  display: block;
+  font-size: 10px;
+  color: var(--color-danger);
+  margin-top: 2px;
+}
+
+.line-items__amount {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text);
+  text-align: right;
+  white-space: nowrap;
+  padding-top: var(--space-3) !important;
+}
+
+.line-items__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+.line-items__remove:hover {
+  background-color: var(--color-danger-tint);
+  color: var(--color-danger);
+}

@@ -1,0 +1,99 @@
+.inventory-history-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.inventory-history-toolbar__search {
+  flex: 1;
+  min-width: 240px;
+  max-width: 360px;
+}
+
+.inventory-history-toolbar__filters {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.inventory-history-toolbar__filters .field {
+  min-width: 170px;
+}
+
+.inventory-history-body {
+  min-height: 120px;
+}
+
+.inventory-history-body__pad {
+  padding: var(--space-5);
+}
+
+.inventory-history-retry {
+  margin-top: var(--space-4);
+}
+
+.inventory-history-table__link {
+  font-size: inherit;
+  font-weight: var(--fw-medium);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+.inventory-history-table__link:hover {
+  color: var(--color-gold-active);
+  text-decoration: underline;
+}
+
+.inventory-history-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.inventory-history-pagination__count {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .inventory-history-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .inventory-history-toolbar__search {
+    max-width: none;
+  }
+  .inventory-history-pagination {
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+}
+
+.inventory-history__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.inventory-history__back:hover {
+  color: var(--color-gold-active);
+}
+
+.inventory-history-toolbar--dates {
+  align-items: flex-end;
+  gap: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.inventory-history-toolbar--dates .field {
+  min-width: 160px;
+}

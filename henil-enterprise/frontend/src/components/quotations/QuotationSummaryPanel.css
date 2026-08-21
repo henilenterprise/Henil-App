@@ -1,0 +1,30 @@
+.quotation-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.quotation-summary__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.quotation-summary__row--discount {
+  align-items: flex-start;
+}
+
+.quotation-summary__discount-input {
+  width: 140px;
+}
+
+.quotation-summary__row--total {
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--color-border);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+}

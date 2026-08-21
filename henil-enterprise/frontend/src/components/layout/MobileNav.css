@@ -1,0 +1,117 @@
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 10, 10, 0.55);
+  z-index: var(--z-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.mobile-nav-overlay--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 84vw;
+  background-color: var(--color-black);
+  color: var(--color-text-inverse);
+  z-index: var(--z-modal);
+  transform: translateX(-100%);
+  transition: transform var(--duration-base) var(--ease-standard);
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav--open {
+  transform: translateX(0);
+}
+
+.mobile-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--color-graphite);
+}
+
+.mobile-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mobile-nav__brand-mark {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.mobile-nav__brand p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.mobile-nav__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-inverse-muted);
+}
+.mobile-nav__close:hover {
+  background-color: var(--color-black-soft);
+  color: var(--color-text-inverse);
+}
+
+.mobile-nav__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mobile-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  color: var(--color-text-inverse-muted);
+}
+
+.mobile-nav__link:hover {
+  background-color: var(--color-black-soft);
+  color: var(--color-text-inverse);
+}
+
+.mobile-nav__link--active {
+  background-color: var(--color-black-soft);
+  color: var(--color-gold);
+  font-weight: var(--fw-medium);
+}
+
+@media (min-width: 901px) {
+  .mobile-nav,
+  .mobile-nav-overlay {
+    display: none;
+  }
+}

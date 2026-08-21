@@ -1,0 +1,15 @@
+.artwork-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.artwork-form__full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 560px) {
+  .artwork-form__grid {
+    grid-template-columns: 1fr;
+  }
+}

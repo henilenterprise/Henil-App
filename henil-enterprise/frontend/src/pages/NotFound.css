@@ -1,0 +1,29 @@
+.not-found {
+  min-height: calc(100vh - var(--topbar-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.not-found__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-neutral-100);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.not-found h1 {
+  margin-bottom: var(--space-2);
+}
+
+.not-found .text-muted {
+  margin-bottom: var(--space-5);
+}

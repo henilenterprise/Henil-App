@@ -1,0 +1,129 @@
+.nesting-form__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.nesting-form__back:hover {
+  color: var(--color-gold-active);
+}
+
+.nesting-form__retry {
+  margin-top: var(--space-3);
+}
+
+.nesting-form__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+.nesting-form__grid > * {
+  min-width: 0;
+}
+
+.nesting-form__main,
+.nesting-form__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.nesting-form__section {
+  margin-bottom: 0;
+}
+
+.nesting-form__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.nesting-form__full {
+  grid-column: 1 / -1;
+}
+
+.nesting-parts__table-wrap {
+  overflow-x: auto;
+  margin-bottom: var(--space-4);
+}
+
+.nesting-parts__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+.nesting-parts__table th {
+  text-align: left;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: var(--space-2);
+}
+.nesting-parts__table td {
+  padding: var(--space-1) var(--space-2);
+  vertical-align: middle;
+}
+
+.nesting-form__optimize-btn {
+  width: 100%;
+  margin-bottom: var(--space-4);
+}
+
+.nesting-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.nesting-results__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.nesting-results__stat-label {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.nesting-results__stat-value {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.nesting-results__unplaced {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+  font-size: var(--fs-xs);
+}
+
+.nesting-form__export-btn {
+  width: 100%;
+}
+
+.nesting-form__save-btn {
+  width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .nesting-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .nesting-form__fields {
+    grid-template-columns: 1fr;
+  }
+  .nesting-results__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

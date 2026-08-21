@@ -1,0 +1,122 @@
+.invoice-view__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.invoice-view__back:hover {
+  color: var(--color-gold-active);
+}
+
+.invoice-view__retry {
+  margin-top: var(--space-4);
+}
+
+.invoice-view__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-5);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+
+.invoice-view__grid > * {
+  min-width: 0;
+}
+
+.invoice-view__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.invoice-view__totals {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 280px;
+  margin-left: auto;
+}
+
+.invoice-view__totals-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.invoice-view__totals-row--total {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+}
+
+.invoice-view__notes {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.invoice-view__notes-label {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.invoice-view__notes-body {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  white-space: pre-line;
+}
+
+.invoice-view__status-row {
+  margin-bottom: var(--space-4);
+}
+
+.invoice-view__client-name {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.invoice-view__client-detail {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-1) 0;
+}
+
+@media (max-width: 1000px) {
+  .invoice-view__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.invoice-view__totals-row--paid {
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--color-border);
+  color: var(--color-success);
+}
+
+.invoice-view__totals-row--remaining {
+  color: var(--color-danger);
+  font-weight: var(--fw-semibold);
+}
+
+.invoice-view__quotation-link {
+  font-weight: var(--fw-semibold);
+}
+
+.invoice-view__section {
+  margin-bottom: var(--space-5);
+}

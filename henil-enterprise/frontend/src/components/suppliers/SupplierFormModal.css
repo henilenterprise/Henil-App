@@ -1,0 +1,15 @@
+.supplier-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.supplier-form__full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 560px) {
+  .supplier-form__grid {
+    grid-template-columns: 1fr;
+  }
+}

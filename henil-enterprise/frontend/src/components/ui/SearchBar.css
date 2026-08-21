@@ -1,0 +1,10 @@
+.search-bar input[type='search']::-webkit-search-decoration,
+.search-bar input[type='search']::-webkit-search-cancel-button,
+.search-bar input[type='search']::-webkit-search-results-button,
+.search-bar input[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+.search-bar .field__control {
+  border-radius: var(--radius-md);
+}

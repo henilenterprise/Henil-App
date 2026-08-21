@@ -1,0 +1,19 @@
+.record-payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.record-payment-form__locked-invoice {
+  padding: var(--space-3);
+  background-color: var(--color-neutral-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.record-payment-form__invoice-number {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  margin: var(--space-1) 0 0 0;
+}
