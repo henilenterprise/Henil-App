@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient.js';
+import { selectInBatches } from './supabaseBatch.js';
 
 export const ADD_TRANSACTION_TYPES = [
   { value: 'PURCHASE', label: 'Purchase (received new stock)' },
@@ -57,12 +58,11 @@ export async function getInventoryOverview() {
   if (error) throw error;
 
   const ids = products.map((p) => p.id);
-  let inventoryRows = [];
-  if (ids.length > 0) {
-    const { data, error: invError } = await supabase.from('inventory').select('*').in('product_id', ids);
-    if (invError) throw invError;
-    inventoryRows = data ?? [];
-  }
+  // Batched rather than a single `.in('product_id', ids)` — with
+  // enough active products that list would make the request URL too
+  // long and Supabase/PostgREST would reject the whole query with a
+  // 400, however many products exist. See services/supabaseBatch.js.
+  const inventoryRows = await selectInBatches({ table: 'inventory', select: '*', column: 'product_id', values: ids });
   const invByProduct = new Map(inventoryRows.map((r) => [r.product_id, r]));
 
   return products.map((p) => {

@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient.js';
 import { round2 } from '../utils/quotationCalculations.js';
+import { selectInBatches } from './supabaseBatch.js';
 
 /*
   Reports service layer. Every function here queries real Supabase
@@ -20,9 +21,8 @@ import { round2 } from '../utils/quotationCalculations.js';
 
 async function getClientNameMap(ids) {
   if (!ids.length) return {};
-  const { data, error } = await supabase.from('clients').select('id, company_name').in('id', ids);
-  if (error) throw error;
-  return Object.fromEntries((data ?? []).map((c) => [c.id, c.company_name]));
+  const rows = await selectInBatches({ table: 'clients', select: 'id, company_name', column: 'id', values: ids });
+  return Object.fromEntries(rows.map((c) => [c.id, c.company_name]));
 }
 
 /** IDs of quotations/invoices whose line items reference a given product. */
@@ -57,21 +57,43 @@ export async function getSalesReport({ from, to, clientId, productId } = {}) {
   const quotationIds = await getParentIdsForProduct('quotation_items', 'quotation_id', productId);
   const invoiceIds = await getParentIdsForProduct('invoice_items', 'invoice_id', productId);
 
-  let qQuery = supabase.from('quotations').select('id, quotation_number, quotation_date, total, status, client_id');
-  if (from) qQuery = qQuery.gte('quotation_date', from);
-  if (to) qQuery = qQuery.lte('quotation_date', to);
-  if (clientId) qQuery = qQuery.eq('client_id', clientId);
-  if (quotationIds) qQuery = qQuery.in('id', quotationIds.length ? quotationIds : ['__none__']);
-  const { data: quotations, error: qErr } = await qQuery;
-  if (qErr) throw qErr;
+  const quotationsSelect = 'id, quotation_number, quotation_date, total, status, client_id';
+  const refineQuotations = (q) => {
+    let query = q;
+    if (from) query = query.gte('quotation_date', from);
+    if (to) query = query.lte('quotation_date', to);
+    if (clientId) query = query.eq('client_id', clientId);
+    return query;
+  };
+  let quotations;
+  if (quotationIds) {
+    // productId filter active — quotationIds could be large (every
+    // quotation that ever included this product), so this goes
+    // through the same batched `.in()` helper as the inventory
+    // queries, with the date/client filters chained on per batch.
+    quotations = await selectInBatches({ table: 'quotations', select: quotationsSelect, column: 'id', values: quotationIds, refineQuery: refineQuotations });
+  } else {
+    const { data, error } = await refineQuotations(supabase.from('quotations').select(quotationsSelect));
+    if (error) throw error;
+    quotations = data ?? [];
+  }
 
-  let iQuery = supabase.from('invoices').select('id, invoice_number, invoice_date, total, status, client_id').neq('status', 'CANCELLED');
-  if (from) iQuery = iQuery.gte('invoice_date', from);
-  if (to) iQuery = iQuery.lte('invoice_date', to);
-  if (clientId) iQuery = iQuery.eq('client_id', clientId);
-  if (invoiceIds) iQuery = iQuery.in('id', invoiceIds.length ? invoiceIds : ['__none__']);
-  const { data: invoices, error: iErr } = await iQuery;
-  if (iErr) throw iErr;
+  const invoicesSelect = 'id, invoice_number, invoice_date, total, status, client_id';
+  const refineInvoices = (q) => {
+    let query = q.neq('status', 'CANCELLED');
+    if (from) query = query.gte('invoice_date', from);
+    if (to) query = query.lte('invoice_date', to);
+    if (clientId) query = query.eq('client_id', clientId);
+    return query;
+  };
+  let invoices;
+  if (invoiceIds) {
+    invoices = await selectInBatches({ table: 'invoices', select: invoicesSelect, column: 'id', values: invoiceIds, refineQuery: refineInvoices });
+  } else {
+    const { data, error } = await refineInvoices(supabase.from('invoices').select(invoicesSelect));
+    if (error) throw error;
+    invoices = data ?? [];
+  }
 
   const clientIds = [...new Set(invoices.map((i) => i.client_id))];
   const clientNames = await getClientNameMap(clientIds);
@@ -108,14 +130,23 @@ export async function getSalesReport({ from, to, clientId, productId } = {}) {
 export async function getQuotationsReport({ from, to, clientId, productId, status } = {}) {
   const quotationIds = await getParentIdsForProduct('quotation_items', 'quotation_id', productId);
 
-  let query = supabase.from('quotations').select('id, quotation_number, quotation_date, valid_until, total, status, client_id');
-  if (from) query = query.gte('quotation_date', from);
-  if (to) query = query.lte('quotation_date', to);
-  if (clientId) query = query.eq('client_id', clientId);
-  if (status) query = query.eq('status', status);
-  if (quotationIds) query = query.in('id', quotationIds.length ? quotationIds : ['__none__']);
-  const { data, error } = await query;
-  if (error) throw error;
+  const select = 'id, quotation_number, quotation_date, valid_until, total, status, client_id';
+  const refine = (q) => {
+    let query = q;
+    if (from) query = query.gte('quotation_date', from);
+    if (to) query = query.lte('quotation_date', to);
+    if (clientId) query = query.eq('client_id', clientId);
+    if (status) query = query.eq('status', status);
+    return query;
+  };
+  let data;
+  if (quotationIds) {
+    data = await selectInBatches({ table: 'quotations', select, column: 'id', values: quotationIds, refineQuery: refine });
+  } else {
+    const result = await refine(supabase.from('quotations').select(select));
+    if (result.error) throw result.error;
+    data = result.data ?? [];
+  }
 
   const clientIds = [...new Set(data.map((r) => r.client_id))];
   const clientNames = await getClientNameMap(clientIds);
@@ -146,14 +177,23 @@ export async function getQuotationsReport({ from, to, clientId, productId, statu
 export async function getInvoicesReport({ from, to, clientId, productId, status } = {}) {
   const invoiceIds = await getParentIdsForProduct('invoice_items', 'invoice_id', productId);
 
-  let query = supabase.from('invoices').select('id, invoice_number, invoice_date, due_date, total, status, client_id');
-  if (from) query = query.gte('invoice_date', from);
-  if (to) query = query.lte('invoice_date', to);
-  if (clientId) query = query.eq('client_id', clientId);
-  if (status) query = query.eq('status', status);
-  if (invoiceIds) query = query.in('id', invoiceIds.length ? invoiceIds : ['__none__']);
-  const { data, error } = await query;
-  if (error) throw error;
+  const select = 'id, invoice_number, invoice_date, due_date, total, status, client_id';
+  const refine = (q) => {
+    let query = q;
+    if (from) query = query.gte('invoice_date', from);
+    if (to) query = query.lte('invoice_date', to);
+    if (clientId) query = query.eq('client_id', clientId);
+    if (status) query = query.eq('status', status);
+    return query;
+  };
+  let data;
+  if (invoiceIds) {
+    data = await selectInBatches({ table: 'invoices', select, column: 'id', values: invoiceIds, refineQuery: refine });
+  } else {
+    const result = await refine(supabase.from('invoices').select(select));
+    if (result.error) throw result.error;
+    data = result.data ?? [];
+  }
 
   const clientIds = [...new Set(data.map((r) => r.client_id))];
   const clientNames = await getClientNameMap(clientIds);
@@ -321,12 +361,10 @@ export async function getInventoryReport({ from, to, productId: category } = {})
   if (prodErr) throw prodErr;
 
   const ids = products.map((p) => p.id);
-  let inventoryRows = [];
-  if (ids.length > 0) {
-    const { data, error } = await supabase.from('inventory').select('*').in('product_id', ids);
-    if (error) throw error;
-    inventoryRows = data ?? [];
-  }
+  // Batched — see services/supabaseBatch.js — so this keeps working
+  // however many active products exist, instead of building one
+  // `.in('product_id', ids)` request whose URL grows without bound.
+  const inventoryRows = await selectInBatches({ table: 'inventory', select: '*', column: 'product_id', values: ids });
   const invByProduct = new Map(inventoryRows.map((r) => [r.product_id, r]));
 
   const stockRows = products.map((p) => {
@@ -348,11 +386,20 @@ export async function getInventoryReport({ from, to, productId: category } = {})
   });
 
   // Transaction activity within the date range (if any range given).
-  let txQuery = supabase.from('inventory_transactions').select('transaction_type, quantity, product_id').in('product_id', ids.length ? ids : ['__none__']);
-  if (from) txQuery = txQuery.gte('created_at', `${from}T00:00:00`);
-  if (to) txQuery = txQuery.lte('created_at', `${to}T23:59:59`);
-  const { data: transactions, error: txErr } = await txQuery;
-  if (txErr) throw txErr;
+  // Batched for the same reason as the inventory fetch above; the
+  // date-range filters are chained onto every batch via refineQuery.
+  const transactions = await selectInBatches({
+    table: 'inventory_transactions',
+    select: 'transaction_type, quantity, product_id',
+    column: 'product_id',
+    values: ids,
+    refineQuery: (query) => {
+      let q = query;
+      if (from) q = q.gte('created_at', `${from}T00:00:00`);
+      if (to) q = q.lte('created_at', `${to}T23:59:59`);
+      return q;
+    },
+  });
 
   const totalStockValue = sumBy(stockRows, 'stock_value');
   const lowStockCount = stockRows.filter((r) => r.is_low_stock).length;
